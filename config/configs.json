@@ -1,0 +1,10 @@
+{
+  "server": {
+    "port": ":9090",
+    "gin_mode": "test"
+  },
+  "db":  {
+    "sqlight_path": "./sqlight/GOHR.db",
+    "sqlight_driver": "sqlite"
+  }
+}
