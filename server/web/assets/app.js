@@ -23,7 +23,7 @@ $("#floatingSelect").change(function () {
 });
 
 $("#btnFindJob").click(function(){
-    $(this).text($(this).text() == 'В поиске работы' ? 'Уже работаю' : 'В поиске работы');
+    $(this).text($(this).text() == 'Уже работаю' ? 'В поиске работы' : 'Уже работаю' );
     $("#jobPlace").toggleClass('d-none')
     $("#jobFunc").toggleClass('d-none')
 });

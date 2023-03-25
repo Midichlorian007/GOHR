@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="/assets/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="../assets/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/style.css">
     <style>
 
     </style>
@@ -15,18 +15,13 @@
 <body>
 
 <div class="container pt-2">
-
-    <div class="row">
-<!--        <div class="col-4 offset-4"><h1 class="text-center fw-bold">Welcome Damir</h1></div>-->
-    </div>
-
     <div class="row">
 
         <div class="col-3">
 
             <div class="card p-0">
                 <div class="card-header">
-                    Профиль
+                    Профиль <span class="badge btn-link btn text-black-50">редактировать</span>
                 </div>
 
                 <div class="card-body">
@@ -59,7 +54,6 @@
                         <label for="floatingSelect">Язык прогромирования</label>
                     </div>
                 </div>
-
             </div>
 
             <div class="mt-1">
@@ -68,12 +62,13 @@
                 </form>
             </div>
 
-<div class="btn btn-light w-100 mt-2">Скачать PDF</div>
+            <div class="btn btn-light w-100 mt-2">Скачать PDF</div>
 
             <div class="card mt-2 bg-success">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                     <input type="checkbox" class="btn-check" id="btnCheck1" autocomplete="off">
-                    <label class="btn btn-outline-primary text-dark" for="btnCheck1" id="btnFindJob">В поиске работы</label>
+                    <label class="btn btn-outline-primary text-dark" for="btnCheck1" id="btnFindJob">В поиске
+                        работы</label>
                 </div>
             </div>
             <div class="alert alert-info m-0 p-0 mt-2 text-center d-none" id="jobPlace" role="alert">
@@ -81,11 +76,11 @@
                 Senior HR<br>
                 <span class="badge bg-danger rounded-pill">Verified</span>
             </div>
-<div class="d-none w-100" id="jobFunc">
-    <button class="btn btn-light w-100  mt-2" id="changeJobPlace">Сменит работу или должность</button>
-    <button class="btn btn-light w-100 mt-2" id="makeTest">Назнатить задание</button>
-    <button class="btn btn-light w-100  mt-2" id="postJob">Обьявить о новой вакансий</button>
-</div>
+            <div class="d-none w-100" id="jobFunc">
+                <button class="btn btn-light w-100  mt-2" id="changeJobPlace">Сменит работу или должность</button>
+                <button class="btn btn-light w-100 mt-2" id="makeTest">Создать тесты или задание</button>
+                <button class="btn btn-light w-100  mt-2" id="postJob">Обьявить о новой вакансий</button>
+            </div>
 
         </div>
 
@@ -113,52 +108,125 @@
                 </li>
             </ul>
             <div class="tab-content bg-white " id="myTabContent1">
-                <div class="tab-pane d-flex align-self-center fade show active " id="edu" role="tabpanel" aria-labelledby="edu-tab">
+                <div class="tab-pane  fade show active " id="edu" role="tabpanel" aria-labelledby="edu-tab">
+
+                    <div class="container">
+                        <div class="row">
+                            <h5 class="text-center">Решенные задачи</h5>
+                        </div>
+
+                        <div class="row">
+                            <div class="d-flex justify-content-around g-0">
+
+                                <div class="card w-25 m-2">
+                                    <div class="card-header fw-bold ">
+                                        LeetCode
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><span class="badge bg-danger">Hard</span> 22 </p>
+                                        <p class="card-text"><span class="badge bg-warning">Medium</span> 34 </p>
+                                        <p class="card-text"><span class="badge bg-primary">Easy</span> 56 </p>
+                                    </div>
+                                </div>
+                                <div class="card w-25 m-2">
+                                    <div class="card-header fw-bold ">
+                                        GOHR
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><span class="badge bg-danger">Hard</span> 7 </p>
+                                        <p class="card-text"><span class="badge bg-warning">Medium</span> 21 </p>
+                                        <p class="card-text"><span class="badge bg-primary">Easy</span> 45 </p>
+                                    </div>
+                                </div>
+                                <div class="card w-25 m-2">
+                                    <div class="card-header fw-bold ">
+                                        HackerRank
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><span class="badge bg-danger">Hard</span> 7 </p>
+                                        <p class="card-text"><span class="badge bg-warning">Medium</span> 9 </p>
+                                        <p class="card-text"><span class="badge bg-primary">Easy</span> 12 </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
 
 
-                    <div class="card w-25 m-2">
-                        <div class="card-header fw-bold ">
-                            LeetCode
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text"> <span class="badge bg-danger">Hard</span> 20 </p>
-                            <p class="card-text"><span class="badge bg-warning">Medium</span> 30 </p>
-                            <p class="card-text"><span class="badge bg-primary">Easy</span> 50 </p>
+                    <div class="row">
+                        <h5 class="text-center pt-2">Тесты</h5>
+                    </div>
+
+                    <div class="row mt-2 px-5">
+                        <div class="d-flex flex-wrap ">
+                            <div class="btn btn-success  m-2 user-select-none">Goalng mid-2</div>
+                            <div class="btn btn-success  m-2 user-select-none">Goalng mid-3</div>
+                            <div class="btn btn-danger  m-2 user-select-none">Goalng senior-1</div>
+                            <div class="btn btn-success  m-2 user-select-none">Задание от Kolesa group</div>
+                            <div class="btn btn-success m-2 user-select-none">Python jun-1</div>
+                            <div class="btn btn-warning m-2 user-select-none">Python jun-2</div>
+                            <div class="btn btn-warning m-2 user-select-none">Java jun-1</div>
+                            <div class="btn btn-warning m-2 user-select-none">JS jun-2</div>
                         </div>
                     </div>
-                    <div class="card w-25 m-2">
-                        <div class="card-header fw-bold ">
-                            HackerRank
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text"><span class="badge bg-primary">Total</span> 20 </p>
-                        </div>
-                    </div>
-                    <div class="card w-25 m-2">
-                        <div class="card-header fw-bold ">
-                            LeetCode
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text"> <span class="badge bg-danger">Hard</span> 50 </p>
-                            <p class="card-text"><span class="badge bg-warning">Medium</span> 30 </p>
-                            <p class="card-text"><span class="badge bg-primary">Easy</span> 20 </p>
-                        </div>
-                    </div>
-                    <div class="card w-25 m-2">
-                        <div class="card-header fw-bold ">
-                            LeetCode
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text"> <span class="badge bg-danger">Hard</span> 50 </p>
-                            <p class="card-text"><span class="badge bg-warning">Medium</span> 30 </p>
-                            <p class="card-text"><span class="badge bg-primary">Easy</span> 20 </p>
-                        </div>
+
+                    <div class="row pt-5 px-3 g-0">
+                        <h5 class="text-center ">Рекомендуемые курсы для вас</h5>
+                        <a href="https://stepik.org/course/54403/syllabus" target="_blank">Golang advanced</a>
+                        <a href="https://stepik.org/course/54403/syllabus" target="_blank">Python </a>
+                        <a href="https://stepik.org/course/54403/syllabus" target="_blank">Java</a>
                     </div>
 
                 </div>
 
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <h1 class="text-primary p-3">ПРОИДЕННЫЕ КУРСЫ</h1>
+                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                    <div class="container">
+                        <div class="row pt-3">
+
+                            <div class="col-4">
+                            <div class="card  g-0 m-2 ">
+                                <img src="../assets/kolesa-logo-new.svg" class="m-3" alt="card-group-image">
+                                <div class="card-body">
+                                    <h5 class="card-title">Backend-разработчик PHP/GO</h5>
+                                    <p class="card-text"> от 1 100 000 до 2 000 000 KZT на руки </p>
+                                    <p class="card-text"> Требуемый опыт работы: не требуется Полная занятость, полный день </p>
+                                </div>
+                                    <button class="btn btn-primary">Выполнить тех задание</button>
+                            </div>
+                            </div>
+
+                            <div class="col-4 h-100">
+                                <div class="card h-100 g-0 m-2 ">
+                                    <img src="../assets/main_logo.svg" class="m-3" alt="card-group-image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Software Engineer Python</h5>
+                                        <p class="card-text"> от 500 000 до 1 000 000 KZT на руки </p>
+                                        <p class="card-text"> Требуемый опыт работы: не требуется Полная занятость, полный день </p>
+                                    </div>
+                                    <button class="btn btn-primary">Выполнить тех задание</button>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="card  g-0 m-2 ">
+                                    <img src="../assets/logo_new.svg" class="m-3" alt="card-group-image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Senior GO Engineer</h5>
+                                        <p class="card-text"> от 1 000 000 до 1 500 000 KZT на руки </p>
+                                        <p class="card-text"> Требуемый опыт работы: не требуется Полная занятость, полный день </p>
+                                    </div>
+                                    <button class="btn btn-secondary">Выполнить тех задание</button>
+                                    <button class="btn btn-primary mt-2">Пройти курс обучения</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
@@ -170,11 +238,11 @@
 
 
     </div>
-    
+
 </div>
 
-<script src="/assets/jquery-3.6.3.min.js"></script>
-<script src="/assets/bootstrap.bundle.min.js"></script>
-<script src="/assets/app.js"></script>
+<script src="../assets/jquery-3.6.3.min.js"></script>
+<script src="../assets/bootstrap.bundle.min.js"></script>
+<script src="../assets/app.js"></script>
 </body>
 </html>
