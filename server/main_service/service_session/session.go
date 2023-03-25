@@ -3,13 +3,16 @@ package service_session
 import (
 	"GOHR/server/db"
 	"GOHR/server/model"
+	"errors"
+	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 type SessionInterface interface {
 	AddSession(ctx *gin.Context, session *model.Session)
-	CheckSession(ctx *gin.Context, session string) int
+	GetSession(ctx *gin.Context, session string) *model.Session
 }
 
 type sessionStruct struct {
@@ -23,20 +26,18 @@ func New(db db.DbInterface) SessionInterface {
 }
 
 func (s *sessionStruct) AddSession(ctx *gin.Context, session *model.Session) {
-
-	// all := u.db.GetAllUser(ctx)
-	// if ctx.IsAborted() {
-	// 	return nil
-	// }
-
+	s.db.AddSession(ctx, session)
 }
 
-func (s *sessionStruct) CheckSession(ctx *gin.Context, session string) int {
+func (s *sessionStruct) GetSession(ctx *gin.Context, id string) *model.Session {
+	session := s.db.GetSession(ctx, id)
+	if ctx.IsAborted() {
+		return nil
+	}
+	if session.Expire.Before(time.Now()) {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, ctx.Error(errors.New("session expired")))
+		return nil
+	}
 
-	// all := u.db.GetAllUser(ctx)
-	// if ctx.IsAborted() {
-	// 	return nil
-	// }
-
-	return 0
+	return session
 }

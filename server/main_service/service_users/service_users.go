@@ -13,7 +13,7 @@ type UsersInterface interface {
 	AddNewUser(ctx *gin.Context, user *model.SignUp)
 	CheckUserExists(ctx *gin.Context, login string) bool
 	GetAllUsers(ctx *gin.Context) []*model.User
-	GetUserByID(ctx *gin.Context, id int) *model.User
+	GetUser(ctx *gin.Context, login string) *model.User
 	GetUserSecret(ctx *gin.Context, login string) string
 }
 
@@ -27,12 +27,12 @@ func New(db db.DbInterface) UsersInterface {
 	}
 }
 
-func (u *usersStruct) GetUser(ctx *gin.Context, login string) bool {
+func (u *usersStruct) GetUser(ctx *gin.Context, login string) *model.User {
 	user := u.db.GetUser(ctx, login)
 	if ctx.IsAborted() {
-		return false
+		return nil
 	}
-	return user != nil
+	return user
 }
 
 func (u *usersStruct) CheckUserExists(ctx *gin.Context, login string) bool {
@@ -77,13 +77,3 @@ func (u *usersStruct) GetUserSecret(ctx *gin.Context, login string) string {
 
 // 	return nil
 // }
-
-func (u *usersStruct) GetUserByID(ctx *gin.Context, id int) *model.User {
-
-	// all := u.db.GetAllUser(ctx)
-	// if ctx.IsAborted() {
-	// 	return nil
-	// }
-
-	return nil
-}

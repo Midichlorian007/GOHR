@@ -10,8 +10,10 @@ import (
 	"GOHR/server/model"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -51,15 +53,15 @@ func (s *mainServiceStruct) GetAllUsers(ctx *gin.Context) []*model.User {
 	return allUsers
 }
 
-func (s *mainServiceStruct) GetProfile(ctx *gin.Context, session string) *model.Profile {
+func (s *mainServiceStruct) GetProfile(ctx *gin.Context, sessionID string) *model.Profile {
 	// check session
-	userID := s.Session.CheckSession(ctx, session)
+	session := s.Session.GetSession(ctx, sessionID)
 	if ctx.IsAborted() {
 		return nil
 	}
 	var profile model.Profile
 	// Get user info
-	profile.User = s.Users.GetUserByID(ctx, userID)
+	profile.User = s.Users.GetUser(ctx, session.User)
 	if ctx.IsAborted() {
 		return nil
 	}
@@ -91,9 +93,8 @@ func (s *mainServiceStruct) AddNewUser(ctx *gin.Context, user *model.SignUp) {
 	if ctx.IsAborted() {
 		return
 	}
-	// create session
-	session := model.Session{}
-	s.Session.AddSession(ctx, &session)
+	// add session to db & cookie
+	s.session(ctx, user.Name)
 	if ctx.IsAborted() {
 		return
 	}
@@ -105,16 +106,31 @@ func (s *mainServiceStruct) SignUser(ctx *gin.Context, user *model.SignIn) {
 	if ctx.IsAborted() {
 		return
 	}
-	// validate
+	// validate password
 	if err := bcrypt.CompareHashAndPassword([]byte(secret), []byte(user.Password)); err != nil &&
 		errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) { // passwords did not match
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New("login or password wrong")))
 		return
 	}
+	// add session to db & cookie
+	s.session(ctx, user.Name)
+	if ctx.IsAborted() {
+		return
+	}
+}
+
+func (s *mainServiceStruct) session(ctx *gin.Context, login string) {
 	// create session
-	session := model.Session{}
+	session := model.Session{
+		ID:     uuid.NewString(),
+		User:   login,
+		Expire: time.Now(),
+	}
+	// add session to db
 	s.Session.AddSession(ctx, &session)
 	if ctx.IsAborted() {
 		return
 	}
+	// add session to cookie
+	ctx.SetCookie(model.SessionKey, session.ID, model.SessionMaxAge, "http://127.0.0.1:9090/", "/", false, true)
 }

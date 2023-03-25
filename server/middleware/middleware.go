@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"GOHR/server/model"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,5 +14,5 @@ func CheckSession(ctx *gin.Context) {
 		ctx.HTML(http.StatusUnauthorized, "login.html", gin.H{})
 		ctx.Abort()
 	}
-	ctx.Set("session", session)
+	ctx.Set(model.SessionKey, session)
 }

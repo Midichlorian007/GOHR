@@ -1,19 +1,11 @@
 package model
 
-import "time"
-
 type User struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
 	LastName string `json:"last_name"`
 	Email    string `json:"email"`
 	Role     string `json:"role"`
-}
-
-type Session struct {
-	ID     string    `json:"id"`
-	UserID string    `json:"user_id"`
-	Expire time.Time `json:"expire"`
 }
 
 type Company struct {

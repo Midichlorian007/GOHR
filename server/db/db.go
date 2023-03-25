@@ -14,6 +14,8 @@ type DbInterface interface {
 	AddUser(ctx *gin.Context, user *model.SignUp, secret string)
 	GetUser(ctx *gin.Context, login string) *model.User
 	GetUserSecret(ctx *gin.Context, login string) string
+	AddSession(ctx *gin.Context, session *model.Session)
+	GetSession(ctx *gin.Context, id string) *model.Session
 }
 
 type dbStruct struct {
@@ -83,14 +85,94 @@ func (d *dbStruct) AddUser(ctx *gin.Context, user *model.SignUp, secret string) 
 func (d *dbStruct) GetUser(ctx *gin.Context, login string) *model.User {
 	var user model.User
 
-	//TODO IMPLEMENT ME
+	qry := `SELECT id, name, last_name, email, role
+	FROM users AS u
+	WHERE u.name = ?;`
+
+	statement, err := d.db.Prepare(qry)
+	if err != nil {
+		errMsg := "error db GetUser: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return nil
+	}
+
+	err = statement.QueryRow(login).Scan(
+		&user.ID,
+		&user.Name,
+		&user.LastName,
+		&user.Email,
+		&user.Role,
+	)
+
+	if err != nil {
+		errMsg := "error db GetUser: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return nil
+	}
 
 	return &user
 }
 
 func (d *dbStruct) GetUserSecret(ctx *gin.Context, login string) string {
+	var secret string
+	qry := `SELECT secret
+	FROM users AS u
+	WHERE u.name = ?;`
 
-	//TODO IMPLEMENT ME
+	statement, err := d.db.Prepare(qry)
+	if err != nil {
+		errMsg := "error db GetUserSecret: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return ""
+	}
 
-	return ""
+	if err = statement.QueryRow(login).Scan(&secret); err != nil {
+		errMsg := "error db GetUserSecret: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return ""
+	}
+
+	return secret
+}
+
+func (d *dbStruct) AddSession(ctx *gin.Context, session *model.Session) {
+
+	qry := `INSERT INTO sessions (id, user, expire)
+	VALUES (?, ?, ?);`
+
+	statement, err := d.db.Prepare(qry)
+	if err != nil {
+		errMsg := "error db AddSession: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return
+	}
+
+	_, err = statement.Exec(session.ID, session.User, session.Expire)
+	if err != nil {
+		errMsg := "error db AddSession: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return
+	}
+}
+
+func (d *dbStruct) GetSession(ctx *gin.Context, id string) *model.Session {
+	var session model.Session
+	qry := `SELECT id, user, expire
+	FROM sessions AS s
+	WHERE s.id = ?;`
+
+	statement, err := d.db.Prepare(qry)
+	if err != nil {
+		errMsg := "error db GetUserSecret: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return nil
+	}
+
+	if err = statement.QueryRow(id).Scan(&session.ID, &session.User, &session.Expire); err != nil {
+		errMsg := "error db GetUserSecret: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return nil
+	}
+
+	return &session
 }
