@@ -3,15 +3,18 @@ package service_users
 import (
 	"GOHR/server/db"
 	"GOHR/server/model"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UsersInterface interface {
-	AddNewUser(ctx *gin.Context, user model.User)
-	CheckUserExists(ctx *gin.Context, user model.User) bool
+	AddNewUser(ctx *gin.Context, user *model.SignUp)
+	CheckUserExists(ctx *gin.Context, login string) bool
 	GetAllUsers(ctx *gin.Context) []*model.User
-	GetUser(ctx *gin.Context) *model.User
+	GetUserByID(ctx *gin.Context, id int) *model.User
+	GetUserSecret(ctx *gin.Context, login string) string
 }
 
 type usersStruct struct {
@@ -24,13 +27,31 @@ func New(db db.DbInterface) UsersInterface {
 	}
 }
 
-func (u *usersStruct) CheckUserExists(ctx *gin.Context, user model.User) bool {
-	ok := u.db.CheckUserExists(ctx, user)
-
-	return ok
+func (u *usersStruct) GetUser(ctx *gin.Context, login string) bool {
+	user := u.db.GetUser(ctx, login)
+	if ctx.IsAborted() {
+		return false
+	}
+	return user != nil
 }
-func (u *usersStruct) AddNewUser(ctx *gin.Context, user model.User) {
-	u.db.AddUser(ctx, user)
+
+func (u *usersStruct) CheckUserExists(ctx *gin.Context, login string) bool {
+	user := u.db.GetUser(ctx, login)
+	if ctx.IsAborted() {
+		return false
+	}
+	return user != nil
+}
+
+func (u *usersStruct) AddNewUser(ctx *gin.Context, user *model.SignUp) {
+	// crypt password
+	secret, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(err))
+		return
+	}
+	// add user
+	u.db.AddUser(ctx, user, string(secret))
 }
 
 func (u *usersStruct) GetAllUsers(ctx *gin.Context) []*model.User {
@@ -43,7 +64,21 @@ func (u *usersStruct) GetAllUsers(ctx *gin.Context) []*model.User {
 	return all
 }
 
-func (u *usersStruct) GetUser(ctx *gin.Context) *model.User {
+func (u *usersStruct) GetUserSecret(ctx *gin.Context, login string) string {
+	return u.db.GetUserSecret(ctx, login)
+}
+
+// func (u *usersStruct) GetSession(ctx *gin.Context) *model.User {
+
+// 	// all := u.db.GetAllUser(ctx)
+// 	// if ctx.IsAborted() {
+// 	// 	return nil
+// 	// }
+
+// 	return nil
+// }
+
+func (u *usersStruct) GetUserByID(ctx *gin.Context, id int) *model.User {
 
 	// all := u.db.GetAllUser(ctx)
 	// if ctx.IsAborted() {

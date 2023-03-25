@@ -4,15 +4,16 @@ import (
 	"GOHR/server/model"
 	"database/sql"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type DbInterface interface {
 	GetAllUser(ctx *gin.Context) []*model.User
-	AddUser(ctx *gin.Context, user model.User)
-	AddHR(ctx *gin.Context, user model.HR)
-	CheckUserExists(ctx *gin.Context, user model.User) bool
+	AddUser(ctx *gin.Context, user *model.SignUp, secret string)
+	GetUser(ctx *gin.Context, login string) *model.User
+	GetUserSecret(ctx *gin.Context, login string) string
 }
 
 type dbStruct struct {
@@ -61,11 +62,7 @@ func (d *dbStruct) GetAllUser(ctx *gin.Context) []*model.User {
 	return allUsers
 }
 
-func (d *dbStruct) AddHR(ctx *gin.Context, user model.HR) {
-	//TODO IMPLEMENT ME
-}
-
-func (d *dbStruct) AddUser(ctx *gin.Context, user model.User) {
+func (d *dbStruct) AddUser(ctx *gin.Context, user *model.SignUp, secret string) {
 
 	qry := `INSERT INTO users(name, last_name, email ) VALUES (?, ?, ?); `
 	statement, err := d.db.Prepare(qry)
@@ -83,9 +80,17 @@ func (d *dbStruct) AddUser(ctx *gin.Context, user model.User) {
 	}
 }
 
-func (d *dbStruct) CheckUserExists(ctx *gin.Context, user model.User) bool {
+func (d *dbStruct) GetUser(ctx *gin.Context, login string) *model.User {
+	var user model.User
 
 	//TODO IMPLEMENT ME
 
-	return false
+	return &user
+}
+
+func (d *dbStruct) GetUserSecret(ctx *gin.Context, login string) string {
+
+	//TODO IMPLEMENT ME
+
+	return ""
 }

@@ -4,6 +4,7 @@ import (
 	"GOHR/server/db"
 	"GOHR/server/main_service/service_course"
 	"GOHR/server/main_service/service_hr"
+	"GOHR/server/main_service/service_session"
 	"GOHR/server/main_service/service_solve"
 	"GOHR/server/main_service/service_users"
 	"GOHR/server/model"
@@ -11,19 +12,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type MainServiceInterface interface {
 	GetAllUsers(ctx *gin.Context) []*model.User
-	GetProfile(ctx *gin.Context) *model.Profile
-	AddNewUser(ctx *gin.Context, user model.User)
+	GetProfile(ctx *gin.Context, session string) *model.Profile
+	AddNewUser(ctx *gin.Context, user *model.SignUp)
+	SignUser(ctx *gin.Context, user *model.SignIn)
 }
 
 type mainServiceStruct struct {
-	Users  service_users.UsersInterface
-	HR     service_hr.HRInterface
-	Solve  service_solve.SolveInterface
-	Course service_course.CourseInterface
+	Users   service_users.UsersInterface
+	HR      service_hr.HRInterface
+	Solve   service_solve.SolveInterface
+	Course  service_course.CourseInterface
+	Session service_session.SessionInterface
 	// TODO Тут добовляем необходимые сервисы для выполнения бизнес логики, но не БД
 }
 
@@ -47,10 +51,15 @@ func (s *mainServiceStruct) GetAllUsers(ctx *gin.Context) []*model.User {
 	return allUsers
 }
 
-func (s *mainServiceStruct) GetProfile(ctx *gin.Context) *model.Profile {
+func (s *mainServiceStruct) GetProfile(ctx *gin.Context, session string) *model.Profile {
+	// check session
+	userID := s.Session.CheckSession(ctx, session)
+	if ctx.IsAborted() {
+		return nil
+	}
 	var profile model.Profile
 	// Get user info
-	profile.User = s.Users.GetUser(ctx)
+	profile.User = s.Users.GetUserByID(ctx, userID)
 	if ctx.IsAborted() {
 		return nil
 	}
@@ -67,22 +76,45 @@ func (s *mainServiceStruct) GetProfile(ctx *gin.Context) *model.Profile {
 	return &profile
 }
 
-func (s *mainServiceStruct) AddNewUser(ctx *gin.Context, user model.User) {
-
-	exists := s.Users.CheckUserExists(ctx, user)
+func (s *mainServiceStruct) AddNewUser(ctx *gin.Context, user *model.SignUp) {
+	exists := s.Users.CheckUserExists(ctx, user.Name)
 	if ctx.IsAborted() {
 		return
 	}
-
 	if exists {
 		errMsg := "error AddNewUser: user already exists " + user.Name
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
 		return
 	}
-
+	// create new user
 	s.Users.AddNewUser(ctx, user)
 	if ctx.IsAborted() {
 		return
 	}
+	// create session
+	session := model.Session{}
+	s.Session.AddSession(ctx, &session)
+	if ctx.IsAborted() {
+		return
+	}
+}
 
+func (s *mainServiceStruct) SignUser(ctx *gin.Context, user *model.SignIn) {
+	// get hashed password
+	secret := s.Users.GetUserSecret(ctx, user.Name)
+	if ctx.IsAborted() {
+		return
+	}
+	// validate
+	if err := bcrypt.CompareHashAndPassword([]byte(secret), []byte(user.Password)); err != nil &&
+		errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) { // passwords did not match
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New("login or password wrong")))
+		return
+	}
+	// create session
+	session := model.Session{}
+	s.Session.AddSession(ctx, &session)
+	if ctx.IsAborted() {
+		return
+	}
 }

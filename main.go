@@ -4,14 +4,16 @@ import (
 	"GOHR/server/db"
 	"GOHR/server/handler"
 	"GOHR/server/main_service"
+	"GOHR/server/middleware"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 	_ "modernc.org/sqlite"
-	"net/http"
-	"time"
 )
 
 func main() {
@@ -40,16 +42,17 @@ func setAPIRouts(api *gin.Engine, handlerInterface handler.HandlerInterface) {
 		ctx.String(http.StatusNotFound, "Oops, NOT FOUND 404")
 	})
 
-	user := api.Group("user")
-	user.GET("get_all", handlerInterface.GetAllUsers)
-	user.POST("add_new", handlerInterface.AddNewUser)
+	// user := api.Group("user")
+	// user.GET("get_all", handlerInterface.GetAllUsers)
+	// user.POST("add_new", handlerInterface.AddNewUser)
 
-	hr := api.Group("hr")
-	hr.POST("add_new", handlerInterface.AddNewHR)
+	// hr := api.Group("hr")
+	// hr.POST("add_new", handlerInterface.AddNewHR)
 
 	web := api.Group("web", handlerInterface.AddNewHR)
-	web.GET("/", handlerInterface.Index)
-	web.POST("/profile", handlerInterface.Profile)
+	web.GET("/", middleware.CheckSession, handlerInterface.Index)
+	web.POST("/signin", handlerInterface.SignIn)
+	web.POST("/signup", handlerInterface.SignUp)
 	web.GET("/logout", handlerInterface.Logout)
 }
 

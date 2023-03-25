@@ -1,20 +1,24 @@
 package model
 
-type User struct {
-	ID       string `json:"id"`
-	Name     string `form:"inputName" json:"name"`
-	LastName string `json:"last_name"`
-	Email    string `json:"email"`
-	//ETC
-}
+import "time"
 
-type HR struct {
+type User struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
 	LastName string `json:"last_name"`
 	Email    string `json:"email"`
-	Company  string `json:"company"`
-	//ETC
+	Role     string `json:"role"`
+}
+
+type Session struct {
+	ID     string    `json:"id"`
+	UserID string    `json:"user_id"`
+	Expire time.Time `json:"expire"`
+}
+
+type Company struct {
+	BIN  string `json:"bin"`
+	Name string `json:"name"`
 }
 
 type ProblemSolve struct {

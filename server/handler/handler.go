@@ -5,19 +5,20 @@ import (
 	"GOHR/server/model"
 	"errors"
 
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"net/http"
 )
 
 type HandlerInterface interface {
 	GetAllUsers(ctx *gin.Context)
-	AddNewUser(ctx *gin.Context)
 	AddNewHR(ctx *gin.Context)
 	Index(ctx *gin.Context)
-	Login(ctx *gin.Context)
+	SignIn(ctx *gin.Context)
+	SignUp(ctx *gin.Context)
 	Logout(ctx *gin.Context)
-	Profile(ctx *gin.Context)
+	// Profile(ctx *gin.Context)
 }
 
 func New(main_service main_service.MainServiceInterface) HandlerInterface {
@@ -38,8 +39,8 @@ func (h *handlerStuct) GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func (h *handlerStuct) AddNewUser(ctx *gin.Context) {
-	user := model.User{}
+func (h *handlerStuct) SignUp(ctx *gin.Context) {
+	user := model.SignUp{}
 	err := ctx.ShouldBind(&user)
 	if err != nil {
 		errMsg := "error AddNewUser bind body: " + err.Error()
@@ -47,7 +48,7 @@ func (h *handlerStuct) AddNewUser(ctx *gin.Context) {
 		return
 	}
 
-	h.service.AddNewUser(ctx, user)
+	h.service.AddNewUser(ctx, &user)
 	if ctx.IsAborted() {
 		return
 	}
@@ -60,21 +61,13 @@ func (h *handlerStuct) AddNewHR(ctx *gin.Context) {
 }
 
 func (h *handlerStuct) Index(ctx *gin.Context) {
-	session, err := ctx.Cookie(viper.GetString("cookies.session_user"))
-	if err != nil && session == "" {
-		ctx.HTML(http.StatusUnauthorized, "login.html", nil)
-		return
-	}
-	user := h.service.GetProfile(ctx)
+	session, _ := ctx.Get("session")
+	profile := h.service.GetProfile(ctx, session.(string))
 	if ctx.IsAborted() {
-		ctx.HTML(http.StatusUnauthorized, "login.html", nil)
+		ctx.HTML(http.StatusUnauthorized, "login.html", gin.H{})
 		return
 	}
-	// TODO need add info to parse
-	opt := gin.H{
-		"user": user.User.Name,
-	}
-	ctx.HTML(http.StatusOK, "login.html", opt)
+	ctx.HTML(http.StatusOK, "profile.html", gin.H{"profile": profile})
 }
 
 func (h *handlerStuct) Logout(ctx *gin.Context) {
@@ -88,23 +81,24 @@ func (h *handlerStuct) Logout(ctx *gin.Context) {
 	}
 	ctx.HTML(http.StatusOK, "login.html", opt)
 }
-func (h *handlerStuct) Profile(ctx *gin.Context) {
-	userSt := model.User{
-		ID:       "",
-		Name:     "sdg",
-		LastName: "sdg",
-		Email:    "sg",
-	}
 
-	opt := gin.H{
-		"user": userSt,
+func (h *handlerStuct) SignIn(ctx *gin.Context) {
+	user := model.SignIn{}
+	err := ctx.ShouldBind(&user)
+	if err != nil {
+		errMsg := "error SignIn bind body: " + err.Error()
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
+		return
 	}
-	ctx.HTML(http.StatusOK, "profile.html", opt)
-}
-func (h *handlerStuct) Login(ctx *gin.Context) {
-
-	opt := gin.H{
-		"text": "GOHR text",
+	// check for not null values and validate values
+	if !user.Valid() {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New("empty fields or not valid")))
+		return
 	}
-	ctx.HTML(http.StatusOK, "login.html", opt)
+	// sign user
+	h.service.SignUser(ctx, &user)
+	if ctx.IsAborted() {
+		return
+	}
+	ctx.Status(http.StatusCreated)
 }
