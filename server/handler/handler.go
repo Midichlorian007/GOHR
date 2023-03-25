@@ -5,6 +5,7 @@ import (
 	"GOHR/server/model"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"net/http"
 )
 
@@ -14,6 +15,7 @@ type HandlerInterface interface {
 	AddNewHR(ctx *gin.Context)
 	Index(ctx *gin.Context)
 	Login(ctx *gin.Context)
+	Logout(ctx *gin.Context)
 }
 
 func New(main_service main_service.MainServiceInterface) HandlerInterface {
@@ -68,13 +70,24 @@ func (h *handlerStuct) Index(ctx *gin.Context) {
 	opt := gin.H{
 		"text": "GOHR text",
 	}
-	ctx.HTML(http.StatusOK, "profile.html", opt)
+	ctx.HTML(http.StatusOK, "login.html", opt)
 }
 
+func (h *handlerStuct) Logout(ctx *gin.Context) {
+
+	user, _ := ctx.Cookie(viper.GetString("session_user"))
+
+	ctx.SetCookie(user, "", -1, "http://127.0.0.1:9090/", "/", false, true)
+
+	opt := gin.H{
+		"user": "GUEST",
+	}
+	ctx.HTML(http.StatusOK, "login.html", opt)
+}
 func (h *handlerStuct) Login(ctx *gin.Context) {
 
 	opt := gin.H{
 		"text": "GOHR text",
 	}
-	ctx.HTML(http.StatusOK, "profile.html", opt)
+	ctx.HTML(http.StatusOK, "login.html", opt)
 }
