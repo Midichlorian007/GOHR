@@ -3,6 +3,7 @@ package service_users
 import (
 	"GOHR/server/db"
 	"GOHR/server/model"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,6 +11,7 @@ type UsersInterface interface {
 	AddNewUser(ctx *gin.Context, user model.User)
 	CheckUserExists(ctx *gin.Context, user model.User) bool
 	GetAllUsers(ctx *gin.Context) []*model.User
+	GetUser(ctx *gin.Context) *model.User
 }
 
 type usersStruct struct {
@@ -39,4 +41,14 @@ func (u *usersStruct) GetAllUsers(ctx *gin.Context) []*model.User {
 	}
 
 	return all
+}
+
+func (u *usersStruct) GetUser(ctx *gin.Context) *model.User {
+
+	// all := u.db.GetAllUser(ctx)
+	// if ctx.IsAborted() {
+	// 	return nil
+	// }
+
+	return nil
 }
