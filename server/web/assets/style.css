@@ -2,3 +2,11 @@
 body {
     background-image: url("bg.jpg");
 }
+
+.nav-item .nav-link{
+    background: #efebeb;
+}
+
+#myTabContent1 {
+    min-height: 90vh;
+}

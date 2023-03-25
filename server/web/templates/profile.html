@@ -1,27 +1,176 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="/assets/bootstrap.min.css">
-  <link rel="stylesheet" href="/assets/style.css">
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/assets/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
 
-  </style>
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="row ">
-    <h1 class="text-center">Welcome {{ .user }}</h1>
-  </div>
+<div class="container pt-2">
 
-  <div class="mainUser">
-    <h1>TES DATA</h1>
-  </div>
+    <div class="row">
+<!--        <div class="col-4 offset-4"><h1 class="text-center fw-bold">Welcome Damir</h1></div>-->
+    </div>
+
+    <div class="row">
+
+        <div class="col-3">
+
+            <div class="card p-0">
+                <div class="card-header">
+                    Профиль
+                </div>
+
+                <div class="card-body">
+                    <p class="card-text  m-0">Имя</p>
+                    <h5 class="card-title  m-0 mx-3">Дамир</h5>
+                    <p class="card-text  m-0">Фамилия</p>
+                    <h5 class="card-title m-0 mx-3">Карбозов</h5>
+                    <p class="card-text m-0">Стаж</p>
+                    <h5 class="card-title m-0 mx-3 ">3 года 6 месяцев</h5>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <div class="fw-bold" id="minLvl">Middle</div>
+                        <div class="fw-bold" id="maxLvl">Senior</div>
+                    </div>
+                    <div class="progress" style="height: 30px;">
+                        <div id="progresPercent" class="progress-bar" role="progressbar" style="width: 80%"
+                             aria-valuenow="35"
+                             aria-valuemin="0" aria-valuemax="100">80%
+                        </div>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                            <option value="Golang">Golang</option>
+                            <option value="Java">Java</option>
+                            <option value="JS">JS</option>
+                            <option value="Python">Python</option>
+                        </select>
+                        <label for="floatingSelect">Язык прогромирования</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-1">
+                <form action="login.html" method="get">
+                    <input class="btn btn-light w-100" type="submit" value="Log out">
+                </form>
+            </div>
+
+<div class="btn btn-light w-100 mt-2">Скачать PDF</div>
+
+            <div class="card mt-2 bg-success">
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <input type="checkbox" class="btn-check" id="btnCheck1" autocomplete="off">
+                    <label class="btn btn-outline-primary text-dark" for="btnCheck1" id="btnFindJob">В поиске работы</label>
+                </div>
+            </div>
+            <div class="alert alert-info m-0 p-0 mt-2 text-center d-none" id="jobPlace" role="alert">
+                Kolesa group <br>
+                Senior HR<br>
+                <span class="badge bg-danger rounded-pill">Verified</span>
+            </div>
+<div class="d-none w-100" id="jobFunc">
+    <button class="btn btn-light w-100  mt-2" id="changeJobPlace">Сменит работу или должность</button>
+    <button class="btn btn-light w-100 mt-2" id="makeTest">Назнатить задание</button>
+    <button class="btn btn-light w-100  mt-2" id="postJob">Обьявить о новой вакансий</button>
+</div>
+
+        </div>
+
+
+        <div class="col-9">
+
+            <ul class="nav nav-tabs " id="myTab" role="tablist">
+                <li class="nav-item " role="presentation">
+                    <button class="nav-link active " id="edu-tab" data-bs-toggle="tab" data-bs-target="#edu"
+                            type="button"
+                            role="tab" aria-controls="edu" aria-selected="true">Обучение и достижения
+                    </button>
+                </li>
+                <li class="nav-item " role="presentation">
+                    <button class="nav-link " id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                            type="button"
+                            role="tab" aria-controls="profile" aria-selected="false">Вакансии
+                    </button>
+                </li>
+                <li class="nav-item " role="presentation">
+                    <button class="nav-link " id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback"
+                            type="button"
+                            role="tab" aria-controls="feedback" aria-selected="false">Отзывы
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content bg-white " id="myTabContent1">
+                <div class="tab-pane d-flex align-self-center fade show active " id="edu" role="tabpanel" aria-labelledby="edu-tab">
+
+
+                    <div class="card w-25 m-2">
+                        <div class="card-header fw-bold ">
+                            LeetCode
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"> <span class="badge bg-danger">Hard</span> 20 </p>
+                            <p class="card-text"><span class="badge bg-warning">Medium</span> 30 </p>
+                            <p class="card-text"><span class="badge bg-primary">Easy</span> 50 </p>
+                        </div>
+                    </div>
+                    <div class="card w-25 m-2">
+                        <div class="card-header fw-bold ">
+                            HackerRank
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><span class="badge bg-primary">Total</span> 20 </p>
+                        </div>
+                    </div>
+                    <div class="card w-25 m-2">
+                        <div class="card-header fw-bold ">
+                            LeetCode
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"> <span class="badge bg-danger">Hard</span> 50 </p>
+                            <p class="card-text"><span class="badge bg-warning">Medium</span> 30 </p>
+                            <p class="card-text"><span class="badge bg-primary">Easy</span> 20 </p>
+                        </div>
+                    </div>
+                    <div class="card w-25 m-2">
+                        <div class="card-header fw-bold ">
+                            LeetCode
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"> <span class="badge bg-danger">Hard</span> 50 </p>
+                            <p class="card-text"><span class="badge bg-warning">Medium</span> 30 </p>
+                            <p class="card-text"><span class="badge bg-primary">Easy</span> 20 </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <h1 class="text-primary p-3">ПРОИДЕННЫЕ КУРСЫ</h1>
+                </div>
+
+                <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                    <h1 class="text-primary p-3">Отзывы</h1>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    
 </div>
 
 <script src="/assets/jquery-3.6.3.min.js"></script>
