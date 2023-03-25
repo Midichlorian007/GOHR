@@ -8,9 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 type HandlerInterface interface {
@@ -20,6 +17,7 @@ type HandlerInterface interface {
 	Index(ctx *gin.Context)
 	Login(ctx *gin.Context)
 	Logout(ctx *gin.Context)
+	Profile(ctx *gin.Context)
 }
 
 func New(main_service main_service.MainServiceInterface) HandlerInterface {
@@ -89,6 +87,19 @@ func (h *handlerStuct) Logout(ctx *gin.Context) {
 		"user": "GUEST",
 	}
 	ctx.HTML(http.StatusOK, "login.html", opt)
+}
+func (h *handlerStuct) Profile(ctx *gin.Context) {
+	userSt := model.User{
+		ID:       "",
+		Name:     "sdg",
+		LastName: "sdg",
+		Email:    "sg",
+	}
+
+	opt := gin.H{
+		"user": userSt,
+	}
+	ctx.HTML(http.StatusOK, "profile.html", opt)
 }
 func (h *handlerStuct) Login(ctx *gin.Context) {
 

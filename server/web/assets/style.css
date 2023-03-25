@@ -1,10 +1,4 @@
+
 body {
     background-image: url("bg.jpg");
-}
-
-#nav-tabContent{
-    min-height: 50vh ;
-}
-
-.tab-pane {
 }
