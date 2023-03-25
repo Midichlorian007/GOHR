@@ -6,5 +6,8 @@
   "db":  {
     "sqlight_path": "./sqlight/GOHR.db",
     "sqlight_driver": "sqlite"
+  },
+  "cookies":{
+    "gohr_user_name": "имя зарегистрированного пользователя"
   }
 }

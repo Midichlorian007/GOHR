@@ -46,6 +46,10 @@ func setAPIRouts(api *gin.Engine, handlerInterface handler.HandlerInterface) {
 
 	hr := api.Group("hr")
 	hr.POST("add_new", handlerInterface.AddNewHR)
+
+	web := api.Group("web", handlerInterface.AddNewHR)
+	web.GET("/", handlerInterface.Index)
+	web.GET("/", handlerInterface.Login)
 }
 
 func parseConfig() {
@@ -81,5 +85,7 @@ func prepareAPIServer(serverMode string) *gin.Engine {
 			)
 		},
 	}))
+	r.Static("/assets/", "./server/web/assets/")
+	r.LoadHTMLGlob("./server/web/templates/*")
 	return r
 }
