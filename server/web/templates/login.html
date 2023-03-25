@@ -11,8 +11,86 @@
 </head>
 <body>
 
-<h1>Hello {{ .text }}</h1>
+
+<div class="comtainer">
+    <div class="row ">
+        <h1 class="text-center">Welcome {{ .user }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3 ">
+            <nav class="nav nav-tabs bg-light" id="nav-tab" role="tablist">
+                <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
+                   aria-controls="nav-home" aria-selected="true">SIGN IN</a>
+                <a class="nav-link " id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
+                   aria-controls="nav-profile" aria-selected="false">SIGN UP</a>
+                <div class="m-1">
+                    <form action="http://127.0.0.1:9090/web/logout" method="get" >
+                        <input class="user btn btn-secondary" type="submit" value="Log out">
+                    </form>
+                </div>
+            </nav>
+            <div class="tab-content bg-white border border-light border-1" id="nav-tabContent">
+
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <form action="#" method="post" class="p-3">
+                        <div class="row mb-3">
+                            <label for="inputName" class="col-4 col-form-label">Name</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="inputName" type="hidden" name="inputName">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputPass" class="col-4 col-form-label">Password</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control" id="inputPass" type="hidden" name="inputPass">
+                            </div>
+                        </div>
+                        <button type="submit" class="col-4 btn btn-primary offset-8">Sign in</button>
+                    </form>
+                </div>
+                
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <form action="#" method="post" class="p-3">
+                        <div class="row mb-3">
+                            <label for="inputNameup" class="col-4 col-form-label">Name</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="inputNameup" type="hidden" name="inputNameup">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputPassup" class="col-4 col-form-label">Password</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control" id="inputPassup" type="hidden" name="inputPassup">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputMail" class="col-4 col-form-label">Email</label>
+                            <div class="col-8">
+                                <input type="email" class="form-control" id="inputMail" type="hidden" name="inputMail">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputRole" class="col-4 col-form-label">Роль</label>
+                            <div class="col-8">
+                                <select class="form-control" id="inputRole" type="hidden" name="inputRole">
+                                    <option>Разработчик</option>
+                                    <option>Организация</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <button type="submit" class="col-4 btn btn-primary offset-8">Sign UP</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 <script src="/assets/jquery-3.6.3.min.js"></script>
+<script src="/assets/bootstrap.bundle.min.js"></script>
 <script src="/assets/app.js"></script>
 </body>
 </html>

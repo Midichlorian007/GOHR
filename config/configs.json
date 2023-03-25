@@ -8,6 +8,6 @@
     "sqlight_driver": "sqlite"
   },
   "cookies":{
-    "gohr_user_name": "имя зарегистрированного пользователя"
+    "session_user":"gohr_user_name"
   }
 }
