@@ -4,11 +4,11 @@
     "gin_mode": "test"
   },
   "db":  {
-    "sqlight_path": "./sqlight/GOHR.db",
+    "sqlight_path": "./sqlite/GOHR.db",
     "sqlight_driver": "sqlite"
   },
   "db_session":  {
-    "sqlight_path": "./sqlight/session.db",
+    "sqlight_path": "./sqlite/session.db",
     "sqlight_driver": "sqlite"
   },
   "cookies":{

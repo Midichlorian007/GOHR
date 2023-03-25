@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,19 +24,21 @@ type dbStruct struct {
 }
 
 func New(dbPath, dbDriver string) (DbInterface, func() error) {
-
+	_, err := os.Stat(dbPath)
+	if os.IsNotExist(err) {
+		createDB(dbPath) //To create file
+	}
 	db, err := sql.Open(dbDriver, dbPath)
 	if err != nil {
-		createDB(dbPath) //To create SQLite database
-		db, _ = sql.Open(dbDriver, dbPath)
-		createTable(db) //To create table 'users'
+		panic(err)
+
 	}
 
 	err = db.Ping()
 	if err != nil {
 		panic(err)
 	}
-
+	createTable(db) //To create table 'users'
 	return &dbStruct{db: db}, db.Close
 }
 
@@ -163,13 +166,13 @@ func (d *dbStruct) GetSession(ctx *gin.Context, id string) *model.Session {
 
 	statement, err := d.db.Prepare(qry)
 	if err != nil {
-		errMsg := "error db GetUserSecret: " + err.Error()
+		errMsg := "error db GetSession: " + err.Error()
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
 		return nil
 	}
 
 	if err = statement.QueryRow(id).Scan(&session.ID, &session.User, &session.Expire); err != nil {
-		errMsg := "error db GetUserSecret: " + err.Error()
+		errMsg := "error db GetSession: " + err.Error()
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, ctx.Error(errors.New(errMsg)))
 		return nil
 	}

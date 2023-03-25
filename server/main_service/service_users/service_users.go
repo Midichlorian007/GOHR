@@ -67,13 +67,3 @@ func (u *usersStruct) GetAllUsers(ctx *gin.Context) []*model.User {
 func (u *usersStruct) GetUserSecret(ctx *gin.Context, login string) string {
 	return u.db.GetUserSecret(ctx, login)
 }
-
-// func (u *usersStruct) GetSession(ctx *gin.Context) *model.User {
-
-// 	// all := u.db.GetAllUser(ctx)
-// 	// if ctx.IsAborted() {
-// 	// 	return nil
-// 	// }
-
-// 	return nil
-// }
