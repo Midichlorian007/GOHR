@@ -4,8 +4,10 @@ import (
 	"GOHR/server/main_service"
 	"GOHR/server/model"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 type HandlerInterface interface {
@@ -56,17 +58,19 @@ func (h *handlerStuct) AddNewHR(ctx *gin.Context) {
 }
 
 func (h *handlerStuct) Index(ctx *gin.Context) {
-
-	if "user" == "" {
-		opt := gin.H{
-			"text": "GOHR text",
-		}
-
-		ctx.HTML(http.StatusOK, "login.html", opt)
+	session, err := ctx.Cookie(viper.GetString("cookies.session_user"))
+	if err != nil && session == "" {
+		ctx.HTML(http.StatusUnauthorized, "login.html", nil)
+		return
 	}
-
+	user := h.service.GetProfile(ctx)
+	if ctx.IsAborted() {
+		ctx.HTML(http.StatusUnauthorized, "login.html", nil)
+		return
+	}
+	// TODO need add info to parse
 	opt := gin.H{
-		"text": "GOHR text",
+		"user": user.User.Name,
 	}
 	ctx.HTML(http.StatusOK, "profile.html", opt)
 }
