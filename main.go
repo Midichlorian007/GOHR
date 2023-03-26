@@ -49,7 +49,7 @@ func setAPIRouts(api *gin.Engine, handlerInterface handler.HandlerInterface) {
 
 	web := api.Group("web", handlerInterface.AddNewHR)
 	web.GET("/", handlerInterface.Index)
-	web.POST("/profile", handlerInterface.Profile)
+	web.GET("/profile", handlerInterface.Profile)
 	web.GET("/logout", handlerInterface.Logout)
 }
 
